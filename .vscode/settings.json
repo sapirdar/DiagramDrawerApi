@@ -1,0 +1,12 @@
+{
+    "xml.fileAssociations": [
+        {
+            "systemId": "c:\\Dev\\SharedActivitiesApp\\backend\\schema\\tns.xsd",
+            "pattern": "**/**/*.xml"
+        }
+    ],
+    "files.exclude": {
+        "schema": true
+    },
+    "git.ignoreLimitWarning": true
+}
