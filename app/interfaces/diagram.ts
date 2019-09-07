@@ -1,7 +1,8 @@
 
 export interface IDiagram {
     userId: string;
-    graph: any;
+    graph: String;
     updated: Date;
     isPublic: boolean;
+    readOnly: boolean;
 }

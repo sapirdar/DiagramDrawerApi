@@ -6,11 +6,14 @@ export class DiagramsDal {
 
   // Return all public diagrams data without the graph json 
   getAllPublic = async () => {
-    return Diagram.find({ 'isPublic': true }).select("-graph")
+    return Diagram.find({ isPublic: true }).select("-graph")
   };
 
-  getOne = async (id: string) => {
-    return Diagram.findOne({ _id: id });
+  // Return item by id - public or logged on user owner
+  getOne = async (id: string, userId?: string) => {
+    return Diagram.findOne({
+      $or: [{ _id: id, isPublic: true}, { _id: id, userId: userId}]
+    })
   };
 
   create = async (diagram: IDiagram) => {

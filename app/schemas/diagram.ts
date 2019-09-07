@@ -8,7 +8,7 @@ export interface IDiagramModel extends IDiagram, Document {
 
 export var DiagramSchema: Schema = new Schema({
     userId: String,
-    graph: Object,
+    graph: String,
     updated: Date,
     isPublic: Boolean
 
