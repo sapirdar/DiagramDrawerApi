@@ -4,10 +4,9 @@ import { Types } from 'mongoose';
 
 export class DiagramsDal {
 
+  // Return all public diagrams data without the graph json 
   getAllPublic = async () => {
-    return Diagram.find({
-      $or: [{ 'isPublic': true }]
-    })
+    return Diagram.find({ 'isPublic': true }).select("-graph")
   };
 
   getOne = async (id: string) => {
