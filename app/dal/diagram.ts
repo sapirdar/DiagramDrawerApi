@@ -5,15 +5,25 @@ import { Types } from 'mongoose';
 export class DiagramsDal {
 
   // Return all public diagrams data without the graph json 
-  getAllPublic = async () => {
-    return Diagram.find({ isPublic: true }).select("-graph")
+  getAllPublic = async (userId?: string) => {
+    if (userId) {
+      return Diagram.find({ $or: [{ isPublic: true }, { userId: userId }] }).select("-graph")
+    } else {
+      return Diagram.find({ isPublic: true }).select("-graph")
+    }
+
   };
 
   // Return item by id - public or logged on user owner
   getOne = async (id: string, userId?: string) => {
-    return Diagram.findOne({
-      $or: [{ _id: id, isPublic: true}, { _id: id, userId: userId}]
-    })
+    if (userId) {
+      return Diagram.findOne({
+        $or: [{ _id: id, isPublic: true }, { _id: id, userId: userId }]
+      })
+    }
+    else {
+      return Diagram.findOne({ _id: id, isPublic: true })
+    }
   };
 
   create = async (diagram: IDiagram) => {

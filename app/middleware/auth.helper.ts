@@ -26,9 +26,9 @@ export class AuthHelper {
             const tokenParts = token.split('.');
             const encodedPayload = tokenParts[1];
             const rawPayload = atob(encodedPayload);
-            const user = JSON.parse(rawPayload);
-            console.log(user.id); // outputs 'bob'
-            return user;
+            const data = JSON.parse(rawPayload);
+            console.log(data.user.id); 
+            return data.user.id;
         } catch (error) {
             console.log('error', error, '\n');
             return null;

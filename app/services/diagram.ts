@@ -6,12 +6,12 @@ export class DiagramsService {
 
     diagramDal = new DiagramsDal();
 
-    getAll = async () => {
-        return await this.diagramDal.getAllPublic();
+    getAll = async (userId?: string) => {
+        return await this.diagramDal.getAllPublic(userId);
     };
 
-    getOne = async (id: string) => {
-        return await this.diagramDal.getOne(id);
+    getOne = async (id: string, userId?: string) => {
+        return await this.diagramDal.getOne(id, userId);
     };
 
     create = async (diagram: IDiagram) => {

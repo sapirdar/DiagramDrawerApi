@@ -16,7 +16,8 @@ export class DiagramsController {
   // Get all diagrams
   getAll = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      await this.diagramsService.getAll().then((list: IDiagramModel[]) => {
+      const userId = this.authHelper.getLoggenOnUserId(req);
+      await this.diagramsService.getAll(userId).then((list: IDiagramModel[]) => {
         res.status(200).send(list);
       }).catch(
         (error) => {
@@ -32,7 +33,7 @@ export class DiagramsController {
   getOne = (req: Request, res: Response, next: NextFunction) => {
     try {
       const userId = this.authHelper.getLoggenOnUserId(req);
-      this.diagramsService.getOne(req.params.id).then(
+      this.diagramsService.getOne(req.params.id, userId).then(
         (diagram: IDiagramModel | null) => {
           if (diagram && diagram.userId != userId) {
             diagram.readOnly = true;
