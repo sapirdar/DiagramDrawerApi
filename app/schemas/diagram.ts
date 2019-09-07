@@ -3,15 +3,14 @@ import { Schema, Model, model, Document } from 'mongoose';
 import mongooseUniqueValidator = require("mongoose-unique-validator");
 
 export interface IDiagramModel extends IDiagram, Document {
-
 }
 
 export var DiagramSchema: Schema = new Schema({
-    userId: String,
+    user: Object,
     graph: String,
     updated: Date,
-    isPublic: Boolean
-
+    isPublic: Boolean,
+    readOnly: Boolean
 });
 
 DiagramSchema.plugin(mongooseUniqueValidator)

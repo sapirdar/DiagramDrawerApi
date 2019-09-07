@@ -12,15 +12,10 @@ export class UserController {
         const user = new User(req.body);
         user.password = hash;
 
-        user.save().then(
-          () => {
-            res.status(200).json(user);
-          }
+        user.save().then((data) => { res.status(200).json(data); }
         ).catch(
           (error: any) => {
-            res.status(500).json({
-              error: error
-            });
+            res.status(500).send(error);
           }
         );
       }
@@ -31,16 +26,12 @@ export class UserController {
     User.findOne({ email: req.body.email }).then(
       (user: any) => {
         if (!user) {
-          return res.status(401).json({
-            error: new Error('User not found!')
-          });
+          return res.status(401).send('User not found.');
         }
         bcrypt.compare(req.body.password, user.password).then(
           (valid: boolean) => {
             if (!valid) {
-              return res.status(401).json({
-                error: new Error('Incorrect password!')
-              });
+              return res.status(401).send('Incorrect password.');
             }
             const token = jwt.sign(
               { user: user },
@@ -61,38 +52,11 @@ export class UserController {
       }
     ).catch(
       (error: any) => {
-        res.status(500).json({
-          error: error
-        });
+        res.status(500).send(error);
       }
     );
   }
 
-  updateDetails = (req: any, res: any) => {
-    req.body.userDetails = JSON.parse(req.body.thing);
-    const url = req.protocol + '://' + req.get('host');
-    const userToUpdate = new User({
-      email: req.body.thing.email,
-      firstName: req.body.thing.firstName,
-      lastName: req.body.thing.lastName,
-      age: req.body.thing.age,
-      sex: req.body.thing.sex,
-      imageUrl: url + '/images/' + req.file.filename,
-    });
-
-    User.updateOne({ _id: req.params.id }, userToUpdate).then(() => {
-      res.status(201).json({
-        message: 'diagram updated successfully!'
-      });
-    }
-    ).catch(
-      (error: any) => {
-        res.status(400).json({
-          error: error
-        });
-      }
-    );
-  };
 
   delete = (req: any, res: any) => {
     User.deleteOne({ _id: req.params.id }).then(() => {

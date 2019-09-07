@@ -1,12 +1,14 @@
+import { AuthHelper } from "./auth.helper";
+
 const jwt = require('jsonwebtoken');
 
 export class Auth {
+  authHelper = new AuthHelper();
+
   run = (req: any, res: any, next: any) => {
     try {
-      const token = req.headers.authorization.split(' ')[1];
-      const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
-      const userId = decodedToken.userId;
-      if (req.body.userId && req.body.userId !== userId) {
+      const user = this.authHelper.getLoggenOnUser(req);
+      if (req.body.userId && req.body.userId !== user._id) {
         throw 'Invalid user ID';
       } else {
         next();

@@ -1,6 +1,6 @@
 
 export interface IDiagram {
-    userId: string;
+    user: any;
     graph: String;
     updated: Date;
     isPublic: boolean;

@@ -3,12 +3,12 @@ import { runInThisContext } from 'vm';
 var atob = require('atob');
 
 export class AuthHelper {
-    public getLoggenOnUserId(req: any) {
+    public getLoggenOnUser(req: any) {
         const token = this.getHeaderToken(req);
         if (token) {
             const user = this.getLoggenOnUserFromToken(token);
             if (user) {
-                return user.id;
+                return user;
             }
             else {
                 return null;
@@ -19,7 +19,6 @@ export class AuthHelper {
         }
     }
 
-
     private getLoggenOnUserFromToken(token: string) {
         console.log('token', token, '\n');
         try {
@@ -27,8 +26,8 @@ export class AuthHelper {
             const encodedPayload = tokenParts[1];
             const rawPayload = atob(encodedPayload);
             const data = JSON.parse(rawPayload);
-            console.log(data.user.id); 
-            return data.user.id;
+            console.log(data.user); 
+            return data.user;
         } catch (error) {
             console.log('error', error, '\n');
             return null;
