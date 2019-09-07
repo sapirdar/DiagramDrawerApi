@@ -16,14 +16,14 @@ export class DiagramsController {
   getAll = async (req: Request, res: Response, next: NextFunction) => {
     try {
       await this.diagramsService.getAll().then((list) => {
-        res.status(200).json(list);
+        res.status(200).send(list);
       }).catch(
         (error) => {
-          res.status(500).json({ error: error });
+          res.status(500).send(error.message);
         }
       );
     } catch (error) {
-      res.status(500).json({ error: error });
+      res.status(500).send(error.message);
     }
   };
 
@@ -32,52 +32,44 @@ export class DiagramsController {
     try {
       this.diagramsService.getOne(req.params.id).then(
         (diagram) => {
-          res.status(200).json(diagram);
+          res.status(200).send(diagram);
         }
       ).catch((error) => {
-        res.status(404).json({
-          error: error
-        });
+        res.status(404).send(error.message);
       });
     } catch (error) {
-      res.status(500).json({
-        error: error
-      });
+      res.status(500).send(error.message);
     }
   };
 
   // Create new diagram
   create = async (req: any, res: Response, next: NextFunction) => {
     try {
-      var token = this.authHelper.getHeaderToken(req);
-      const userId = this.authHelper.getLoggenOnUserId(token);
+      const userId = this.authHelper.getLoggenOnUserId(req);
 
-      const diagram: IDiagram = JSON.parse(req.body.diagrams);
-      diagram.userId = userId;
+      const diagram: IDiagram = req.body;
+      if (userId) {
+        diagram.userId = userId;
+      }
       diagram.updated = new Date();
 
       this.diagramsService.create(diagram)
         .then((diagram) => {
-          res.status(200).json(diagram);
+          res.status(200).send(diagram._id)
         }).catch((error) => {
-          res.status(400).json({
-            error: error
-          });
+          res.status(400).send(error.message);
         });
     } catch (error) {
-      res.status(500).json({
-        error: error
-      });
+      next(error)
+      res.status(500).send(error.message);
     }
   };
-
 
   // Update existing diagram
   update = (req: any, res: Response, next: NextFunction) => {
     console.log('modifyDiagram');
     try {
-      var token = this.authHelper.getHeaderToken(req);
-      const userId = this.authHelper.getLoggenOnUserId(token);
+      const userId = this.authHelper.getLoggenOnUserId(req);
 
       this.diagramsService.getOne(req.params.id).then((diagram: any) => {
         // Allow owner only to edit a diagram
@@ -87,22 +79,19 @@ export class DiagramsController {
           diagramForUpdate.updated = new Date();
 
           this.diagramsService.update(diagram).then((resullt) => {
-            res.status(201).json(diagram);
+            res.status(201);
           }).catch((error) => {
-            res.status(500).json({
-              error: error
-            });
+            res.status(500).send(error.message);
           });
         }
         else {
-          res.status(401).json({ error: new Error('User not allowed') });
+          res.status(401).send('User not allowed');
         }
       }).catch((error) => {
-        res.status(500).json({ error: error });
-      }
-      )
+        res.status(500).send(error.message);
+      })
     } catch (error) {
-      res.status(500).json({ error: error });
+      res.status(500).send(error.message);
     }
   };
 
@@ -110,28 +99,25 @@ export class DiagramsController {
   delete = (req: Request, res: Response, next: NextFunction) => {
     try {
       this.diagramsService.getOne(req.params.id).then((diagram: any) => {
-        var token = this.authHelper.getHeaderToken(req);
-        const userId = this.authHelper.getLoggenOnUserId(token);
-        const user: IUserModel = this.authHelper.getLoggenOnUser(token);
+        const userId = this.authHelper.getLoggenOnUserId(req);
 
         // Allow owner only to delete a diagram
         if (diagram.publisherUserId == userId) {
           this.diagramsService.delete(req.params.id).then(() => {
-            res.status(200).json(req.params.id);
+            res.status(200).send(req.params.id);
           });
         }
         else {
-          res.status(401).json({ error: new Error('User not allowed') });
+          res.status(401).send('User not allowed');
         }
       }
       ).catch((error) => {
-        res.status(500).json({ error: error });
+        res.status(500).send(error.message);
       })
     } catch (error) {
-      res.status(200).json({ message: error });
+      res.status(200).send(error.message);
     }
   };
-
 }
 
 

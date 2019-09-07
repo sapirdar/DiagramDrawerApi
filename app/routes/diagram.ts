@@ -21,7 +21,7 @@ diagramRouter.use((req, res, next) => {
 
 diagramRouter.get('/', diagramCtrl.getAll);
 diagramRouter.get('/:id', diagramCtrl.getOne);
-diagramRouter.post('/', auth.run, diagramCtrl.create);
+diagramRouter.post('/', diagramCtrl.create);
 diagramRouter.put('/:id', auth.run, diagramCtrl.update);
 diagramRouter.delete('/:id', auth.run, diagramCtrl.delete);
 

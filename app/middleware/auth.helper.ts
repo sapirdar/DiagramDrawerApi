@@ -1,25 +1,26 @@
 import { Request } from 'express';
+import { runInThisContext } from 'vm';
 var atob = require('atob');
 
 export class AuthHelper {
-    loggenOnUserId = null;
-
-    getLoggenOnUserId = (token: string) => {
-        console.log('token', token, '\n');
-        try {
-            const tokenParts = token.split('.');
-            const encodedPayload = tokenParts[1];
-            const rawPayload = atob(encodedPayload);
-            const data = JSON.parse(rawPayload);
-            console.log(data.user.userId); // outputs 'bob'
-            return data.user._id;
-        } catch (error) {
-            console.log('error', error, '\n');
+    public getLoggenOnUserId(req: any) {
+        const token = this.getHeaderToken(req);
+        if (token) {
+            const user = this.getLoggenOnUserFromToken(token);
+            if (user) {
+                return user.id;
+            }
+            else {
+                return null;
+            }
+        }
+        else {
             return null;
         }
     }
 
-    getLoggenOnUser = (token: string) => {
+
+    private getLoggenOnUserFromToken(token: string) {
         console.log('token', token, '\n');
         try {
             const tokenParts = token.split('.');
@@ -34,8 +35,11 @@ export class AuthHelper {
         }
     }
 
-    getHeaderToken = (req: any) => {
-        return req.headers.authorization.split(' ')[1];
+    private getHeaderToken(req: any) {
+        if (req && req.headers && req.headers.authorization) {
+            return req.headers.authorization.split(' ')[1];
+        }
+        return null;
     }
 }
 
