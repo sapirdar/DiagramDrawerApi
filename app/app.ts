@@ -1,8 +1,7 @@
 import express from 'express';
 import { diagramRouter } from './routes/diagram';
 
-const path = require('path');
-const config = require('../config/config');
+const config = require('./config/config');
 
 try {
   const app = express();
