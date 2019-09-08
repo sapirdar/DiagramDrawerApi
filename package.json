@@ -5,15 +5,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -outDir public",
     "dev": "ts-node-dev --respawn --transpileOnly ./app/app.ts",
     "prod": "tsc && node ./public/app.js",
-    "build-ts": "tsc",
-    "postinstall": "npm run build-ts",
-    "start": "npm run serve",
-    "serve": "node public/app.js",
-    "watch-node": "nodemon public/app.js",
-    "watch-ts": "tsc -w"
+    "start": "node ./public/app.js"
   },
   "author": "",
   "license": "ISC",
