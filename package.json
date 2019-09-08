@@ -8,7 +8,7 @@
     "build": "tsc",
     "dev": "ts-node-dev --respawn --transpileOnly ./app/app.ts",
     "prod": "tsc && node ./build/app.js",
-    "start": "tsc && node ./build/app.js"
+    "start": "node ./build/app.js"
   },
   "author": "",
   "license": "ISC",
