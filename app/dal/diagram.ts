@@ -1,29 +1,17 @@
 import { IDiagram } from '../interfaces/diagram';
 import { Diagram } from '../schemas/diagram';
-import { Types } from 'mongoose';
 
 export class DiagramsDal {
 
   // Return all public diagrams data without the graph json 
-  getList = async (userId?: string) => {
-    if (userId) {
-      return Diagram.find({ $or: [{ isPublic: true }, { "user._id": userId }] }).select("-graph")
-    } else {
-      return Diagram.find({ isPublic: true }).select("-graph")
-    }
-
+  getList = async () => {
+    return Diagram.find({ isPublic: true }).select("-graph")
   };
 
   // Return item by id - public or logged on user owner
-  getOne = async (id: string, userId: string) => {
-    if (userId) {
-      return Diagram.findOne({
-        $or: [{ _id: id, isPublic: true }, { _id: id,"user._id": userId }]
-      })
-    }
-    else {
-      return Diagram.findOne({ _id: id, isPublic: true })
-    }
+  getOne = async (id: string) => {
+    return Diagram.findOne({ _id: id })
+
   };
 
   create = async (diagram: IDiagram) => {

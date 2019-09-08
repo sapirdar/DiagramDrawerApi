@@ -1,17 +1,16 @@
 import { IDiagram } from '../interfaces/diagram';
 import { DiagramsDal } from '../dal/diagram';
-import { IDiagramModel, Diagram } from '../schemas/diagram';
 
 export class DiagramsService {
 
     diagramDal = new DiagramsDal();
 
-    getList = async (userId?: string) => {
-        return await this.diagramDal.getList(userId);
+    getList = async () => {
+        return await this.diagramDal.getList();
     };
 
-    getOne = async (id: string, userId: string) => {
-        return await this.diagramDal.getOne(id, userId);
+    getOne = async (id: string) => {
+        return await this.diagramDal.getOne(id);
     };
 
     create = async (diagram: IDiagram) => {
