@@ -24,9 +24,9 @@ export class DiagramsController {
   };
 
   // Get diagram by id
-  getOne = (req: Request, res: Response, next: NextFunction) => {
+  getById = (req: Request, res: Response, next: NextFunction) => {
     try {
-      this.diagramsService.getOne(req.params.id).then(
+      this.diagramsService.getById(req.params.id).then(
         (diagram: IDiagramModel | null) => {
           if (diagram) {
             res.status(200).send(diagram);
@@ -52,7 +52,7 @@ export class DiagramsController {
       this.diagramsService.create(diagram)
         .then((diagram: IDiagramModel | null) => {
           if (diagram) {
-            res.status(200).send(diagram._id)
+            res.status(201).send(diagram._id)
           }
           else {
             res.status(404).send('Not found');
@@ -70,14 +70,14 @@ export class DiagramsController {
   update = (req: any, res: Response, next: NextFunction) => {
     console.log('modifyDiagram');
     try {
-      this.diagramsService.getOne(req.params.id).then((diagram: IDiagram | null) => {
+      this.diagramsService.getById(req.params.id).then((diagram: IDiagram | null) => {
         // Allow owner only to edit a diagram
         let diagramForUpdate: IDiagram = req.body;
         diagramForUpdate = Object.assign(diagram, diagramForUpdate);
         diagramForUpdate.updated = new Date();
 
         this.diagramsService.update(diagramForUpdate).then((result) => {
-          res.status(201).send('success');
+          res.status(201).send(req.params.id)
         }).catch((error) => {
           res.status(500).send(error.message);
         });
@@ -88,5 +88,5 @@ export class DiagramsController {
       res.status(500).send(error.message);
     }
   };
-  
+
 }

@@ -9,8 +9,8 @@ export class DiagramsService {
         return await this.diagramDal.getList();
     };
 
-    getOne = async (id: string) => {
-        return await this.diagramDal.getOne(id);
+    getById = async (id: string) => {
+        return await this.diagramDal.getById(id);
     };
 
     create = async (diagram: IDiagram) => {

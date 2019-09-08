@@ -7,8 +7,7 @@ export interface IDiagramModel extends IDiagram, Document {
 
 export var DiagramSchema: Schema = new Schema({
     graph: String,
-    updated: Date,
-    isPublic: Boolean,
+    updated: Date
 });
 
 DiagramSchema.plugin(mongooseUniqueValidator)

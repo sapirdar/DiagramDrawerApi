@@ -28,8 +28,7 @@
     "nodemon": "^1.19.1",
     "sharp": "^0.22.1",
     "ts-node-dev": "^1.0.0-pre.40",
-    "typescript": "^3.5.3",
-    "uuid": "^3.3.2"
+    "typescript": "^3.5.3"
   },
   "devDependencies": {
     "@types/atob": "^2.1.2",
