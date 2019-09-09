@@ -70,20 +70,13 @@ export class DiagramsController {
   update = (req: any, res: Response, next: NextFunction) => {
     console.log('modifyDiagram');
     try {
-      this.diagramsService.getById(req.params.id).then((diagram: IDiagram | null) => {
-        // Allow owner only to edit a diagram
-        let diagramForUpdate: IDiagram = req.body;
-        diagramForUpdate = Object.assign(diagram, diagramForUpdate);
-        diagramForUpdate.updated = new Date();
-
-        this.diagramsService.update(diagramForUpdate).then((result) => {
-          res.status(201).send(req.params.id)
-        }).catch((error) => {
-          res.status(500).send(error.message);
-        });
+      let diagram: IDiagram = req.body;
+      // Update diagram in db
+      this.diagramsService.update(diagram).then((result) => {
+        res.status(201).send(req.params.id)
       }).catch((error) => {
         res.status(500).send(error.message);
-      })
+      });
     } catch (error) {
       res.status(500).send(error.message);
     }

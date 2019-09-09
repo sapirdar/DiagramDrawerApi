@@ -6,6 +6,7 @@ const config = require('./config/config');
 try {
   const app = express();
 
+  // Routes
   app.use('/api/diagrams', diagramRouter);
 
   // connect to mongoDB database 
@@ -19,6 +20,7 @@ try {
       console.error(error);
     });
 
+  // Set app port
   app.listen(process.env.PORT || '3000', function () {
     console.log('App listening on port 3000!');
   });

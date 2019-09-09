@@ -8,6 +8,7 @@ const diagramRouter: Router = express.Router();
 
 diagramRouter.use(bodyParser.json());
 
+// Headers
 diagramRouter.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
@@ -15,13 +16,10 @@ diagramRouter.use((req, res, next) => {
     next();
 });
 
+// Routes
 diagramRouter.get('/', diagramCtrl.getList);
 diagramRouter.get('/:id', diagramCtrl.getById);
 diagramRouter.post('/', diagramCtrl.create);
 diagramRouter.put('/:id', diagramCtrl.update);
 
 export { diagramRouter }
-
-
-
-
